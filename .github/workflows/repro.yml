@@ -28,22 +28,3 @@ jobs:
         shell: bash
         run: scripts/with-latest.sh -v ./filestore_lock/
 
-  # Bug 1: micro.AddService data race. Expected: red with the pinned v1.53.1
-  # (DATA RACE), green with latest (fixed upstream in v1.55.0).
-  micro-race:
-    strategy:
-      fail-fast: false
-      matrix:
-        versions: [pinned, latest]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - name: pinned
-        if: matrix.versions == 'pinned'
-        run: go test -race -count=1 -v ./micro_race/
-      - name: latest releases
-        if: matrix.versions == 'latest'
-        run: scripts/with-latest.sh -race -v ./micro_race/

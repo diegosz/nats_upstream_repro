@@ -1,5 +1,20 @@
 # Status
 
+## 2026-11-15 — Decisions answered; Bug 1 dropped; waiting on the empty repo
+
+Operator's answers (relayed by the conductor): (1) public `diegosz/nats_upstream_repro`; operator
+creates it empty on the web, then I push. (2) GitHub-hosted `windows-latest` + `ubuntu-latest` only.
+(3) Bug 1 is not reported and is out of this repo's scope (the conductor moves `ape` to nats.go
+v1.55.0). (4) Bug 2: I draft `docs/ISSUE-nats-server.md` after the CI result; the operator files it.
+Nothing else outward.
+
+- Removed `micro_race/`, the Bug 1 evidence and the `micro-race` CI job (all still in commit
+  e7ddb97). Findings kept in the entry below.
+- `repro.yml` now only runs `filestore-lock`: {windows-latest, ubuntu-latest} × {pinned v2.14.5,
+  latest}, on push to `main` and on `workflow_dispatch`.
+- SSH to github.com authenticates as `diegosz`. Next: push once the empty repo exists, then read
+  the run.
+
 ## 2026-11-14 — Local phase done ($0); waiting on the four Decisions
 
 Nothing has left this machine: no remote, no push, no CI, no issue. Upstream checks were anonymous

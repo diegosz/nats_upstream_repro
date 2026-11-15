@@ -1,9 +1,0 @@
-=== RUN   TestAddServiceCloseRace
-    race_test.go:77: iteration 0
-    race_test.go:77: iteration 500
-    race_test.go:77: iteration 1000
-    race_test.go:77: iteration 1500
-    race_test.go:50: iterations=2000 recovered AddService panics=0
---- PASS: TestAddServiceCloseRace (3.33s)
-PASS
-ok  	github.com/diegosz/nats_upstream_repro/micro_race	4.359s
