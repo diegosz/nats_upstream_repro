@@ -1,5 +1,33 @@
 # Status
 
+## 2026-11-15 — Pushed; CI green on Windows too: Bug 2 NOT reproduced
+
+- Pushed `main` (52fde0f, no tags) to the public `diegosz/nats_upstream_repro`. The push triggered
+  `repro.yml`, run 43766782866
+  (https://github.com/diegosz/nats_upstream_repro/actions/runs/43766782866): **all 4 jobs
+  succeeded**.
+
+  | Job                                   | Result  | Duration |
+  | ------------------------------------- | ------- | -------- |
+  | windows-latest, pinned (v2.14.5)      | success | 77 s     |
+  | windows-latest, latest (v2.15.3)      | success | 69 s     |
+  | ubuntu-latest, pinned (v2.14.5)       | success | 44 s     |
+  | ubuntu-latest, latest (v2.15.3)       | success | 44 s     |
+
+- So on Windows too: 5 restarts in a row on the same `StoreDir` and an immediate `RemoveAll` all
+  succeeded first time. The tests `t.Errorf` on any first-attempt failure, so green means no
+  lock was seen. GitHub returns 403 for the job logs to unauthenticated reads, so I have no
+  per-round timings; the operator can read them on the run page.
+- Likely gap against ape's case: `populate` closes its client before `Shutdown()`, so the server
+  stops with no connections, consumers or in-flight writes. ape shut down with live clients
+  attached. Other candidates: more streams/consumers, publishing during shutdown, many more rounds.
+- `docs/ISSUE-nats-server.md` is a skeleton headed "DRAFT — NOT READY, DO NOT FILE". There is no
+  red run to link yet, so there is no bug report to file.
+- Proposed next step (needs the operator's word: a new push and CI run): extend the repro to shut
+  down with a live client, a durable consumer and a publisher still running, loop 50 rounds, and
+  rerun on `windows-latest`. If that's still green, fall back to the operator reading the
+  `started again after …` lines in ape's five Windows runs.
+
 ## 2026-11-15 — Decisions answered; Bug 1 dropped; waiting on the empty repo
 
 Operator's answers (relayed by the conductor): (1) public `diegosz/nats_upstream_repro`; operator
