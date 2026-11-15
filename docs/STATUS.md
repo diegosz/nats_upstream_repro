@@ -14,6 +14,8 @@ Nothing else outward.
   latest}, on push to `main` and on `workflow_dispatch`.
 - SSH to github.com authenticates as `diegosz`. Next: push once the empty repo exists, then read
   the run.
+- 2026-11-15T14:50Z: the 2 h push watcher timed out; `diegosz/nats_upstream_repro` still does not
+  exist. Nothing pushed. Waiting for the operator to create the empty public repo.
 
 ## 2026-11-14 — Local phase done ($0); waiting on the four Decisions
 
