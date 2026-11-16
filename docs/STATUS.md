@@ -1,5 +1,34 @@
 # Status
 
+## 2026-11-16 — Stronger repro also green on Windows: Bug 2 still NOT reproduced
+
+- Operator GO (2026-11-16) covered pushes to `main` for this repro. Pushed 3d55c56 and 7003002
+  (`TestRestartWithLiveClient`): 50 rounds, each shutting down while a client stays connected with
+  a `PublishAsync` loop and a durable pull consumer (`Consume` + explicit ack) running, then an
+  immediate restart on the same `StoreDir`. Ends with an immediate `RemoveAll` after a shutdown
+  with a live client. Locally about 24k msgs stored per round (stream capped at 20k msgs, ~11 MB).
+- Run 43893399879 (https://github.com/diegosz/nats_upstream_repro/actions/runs/43893399879):
+  **all 4 jobs succeeded.**
+
+  | Job                               | Result  | Test step |
+  | --------------------------------- | ------- | --------- |
+  | windows-latest, pinned (v2.14.5)  | success | 40 s      |
+  | windows-latest, latest (v2.15.3)  | success | 28 s      |
+  | ubuntu-latest, pinned (v2.14.5)   | success | 39 s      |
+  | ubuntu-latest, latest (v2.15.3)   | success | 25 s      |
+
+- The test `t.Errorf`s on any first-attempt failure, so across 50 + 5 restarts and 2 removals per
+  Windows job (×2 versions), nats-server released the store every time. Step times fit 50 real
+  rounds. Job logs are still 403 to unauthenticated reads, so I can't quote the round lines.
+- Conclusion: two increasingly realistic repros can't show nats-server holding store files after
+  `WaitForShutdown()` on `windows-latest`. **There is nothing to file yet**; the issue draft stays
+  "NOT READY, DO NOT FILE".
+- What this leaves open about ape's lock (not checked, outside this repo): something other than
+  nats-server's own store files, e.g. ape code or a test helper holding a handle in the store dir,
+  a client/KV watcher in ape left open, or the runner's antivirus scanning newly written files.
+  The `started again after …` lines in ape's five Windows runs, which the operator can read,
+  would show how long the lock lasted and how often it happened.
+
 ## 2026-11-15 — Pushed; CI green on Windows too: Bug 2 NOT reproduced
 
 - Pushed `main` (52fde0f, no tags) to the public `diegosz/nats_upstream_repro`. The push triggered

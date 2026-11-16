@@ -1,8 +1,10 @@
 # DRAFT — NOT READY, DO NOT FILE
 
-> Status 2026-11-15: the repro in this repo does **not** reproduce the bug yet. CI run
-> https://github.com/diegosz/nats_upstream_repro/actions/runs/43766782866 was green on
-> `windows-latest` and `ubuntu-latest`, for v2.14.5 and v2.15.3. An issue needs a red Windows run to
+> Status 2026-11-16: the repro in this repo does **not** reproduce the bug. Both CI runs were green
+> on `windows-latest` and `ubuntu-latest`, for v2.14.5 and v2.15.3:
+> https://github.com/diegosz/nats_upstream_repro/actions/runs/43766782866 (5 idle restarts) and
+> https://github.com/diegosz/nats_upstream_repro/actions/runs/43893399879 (50 restarts with a live
+> client, publisher and durable consumer). An issue needs a red Windows run to
 > link, so the text below is a skeleton to finish once one exists. Fill every `<…>`.
 
 ---
