@@ -11,6 +11,9 @@ Embedded server with `JetStream: true, StoreDir: dir`, a file-storage stream + K
 `Shutdown()` + `WaitForShutdown()`, then immediately (a) start a new server on the same `StoreDir`,
 (b) `os.RemoveAll(dir)`. The tests fail if the first attempt fails and log how long retries take.
 
+`TestRestartWithLiveClient` does the same over 50 rounds (`ROUNDS=n`) while a client stays
+connected through each shutdown, with a publisher and a durable pull consumer running.
+
 ```sh
 go test -count=1 -v ./filestore_lock/
 ```

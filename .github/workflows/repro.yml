@@ -14,6 +14,7 @@ jobs:
         os: [windows-latest, ubuntu-latest]
         versions: [pinned, latest]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -22,9 +23,9 @@ jobs:
       - name: pinned (nats-server v2.14.5, nats.go v1.53.1)
         if: matrix.versions == 'pinned'
         shell: bash
-        run: go test -count=1 -v ./filestore_lock/
+        run: go test -count=1 -timeout 40m -v ./filestore_lock/
       - name: latest releases
         if: matrix.versions == 'latest'
         shell: bash
-        run: scripts/with-latest.sh -v ./filestore_lock/
+        run: scripts/with-latest.sh -timeout 40m -v ./filestore_lock/
 
